@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soru Zamanı</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('kalpler.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 350px;
+        }
+
+        .question-area {
+            text-align: center;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #e91e63;
+            font-size: 28px;
+            margin-bottom: 0;
+            line-height: 1.4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-area {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-end;
+            margin-top: 40px;
+            padding-bottom: 20px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #yesBtn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            background: #45a049;
+        }
+
+        #noBtn {
+            background: #f44336;
+            color: white;
+        }
+
+        #noBtn:hover {
+            background: #da190b;
+        }
+
+        .final-message {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s ease-in;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .final-message h2 {
+            color: #e91e63;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .final-message p {
+            font-size: 20px;
+            color: #333;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .final-message img {
+            max-width: 350px;
+            width: 100%;
+            margin: 25px auto;
+            display: block;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
+            border: 3px solid #e91e63;
+            transition: transform 0.3s ease;
+        }
+
+        .final-message img:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .hearts {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            font-size: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="question-area">
+            <h1 id="question">Ben senden hoşlanıyorum, sen de benden hoşlanıyor musun?</h1>
+        </div>
+        
+        <div class="button-area">
+            <button id="yesBtn">Evet</button>
+            <button id="noBtn">Hayır</button>
+        </div>
+
+        <div class="final-message" id="finalMessage">
+            <div class="hearts">💕 💖 💕</div>
+            <h2>Harika! 💕</h2>
+            <p>Çok mutlu oldum!</p>
+            <p id="phoneNumber" style="font-size: 22px; color: #e91e63; font-weight: bold;">📱 0535 782 77 45<br> Lütfen benden çekinme ve korkma!<br>hiç olmazsa bir tanışsak😊😊💖</p>
+            <img src="şirler.png" alt="Şiirler">
+            <p>👍umarım beğenmişsindir👍</p>
+        </div>
+    </div>
+
+    <script>
+        const yesQuestions = [
+            "Ben senden hoşlanıyorum, sen de benden hoşlanıyor musun?",
+            "Gerçekten mi? 😊 Benimle vakit geçirmek ister misin?",
+            "Ben seni çok seviyorum 💕 Sen de beni seviyor musun?",
+            "Seninle olmak beni mutlu ederdi 🥰 Sen ne hissediyorsun?",
+            "Bana karşı hislerin gerçek mi? 💖"
+        ];
+
+        const noQuestions = [
+            "Emin misin?",
+            "Belki biraz daha düşünmek ister misin?",
+            "Benimle tanışmayı hiç mi istemezsin? 🥺",
+            "Hadi be güzelim! Son bir şans daha versen?"
+        ];
+
+        let yesCount = 0;
+        let noCount = 0;
+        let yesBtnSize = 1;
+        let noBtnSize = 1;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionEl = document.getElementById('question');
+        const finalMessage = document.getElementById('finalMessage');
+        const questionArea = document.querySelector('.question-area');
+        const buttonArea = document.querySelector('.button-area');
+
+        function growYesButton() {
+            if (yesBtnSize < 2.5) {
+                yesBtnSize += 0.25;
+                yesBtn.style.transform = `scale(${yesBtnSize})`;
+            }
+        }
+
+        function shrinkNoButton() {
+            noBtnSize -= 0.15;
+            if (noBtnSize < 0.3) noBtnSize = 0.3;
+            noBtn.style.transform = `scale(${noBtnSize})`;
+        }
+
+        yesBtn.addEventListener('click', function() {
+            growYesButton();
+            yesCount++;
+            
+            if (yesCount < yesQuestions.length) {
+                questionEl.textContent = yesQuestions[yesCount];
+                
+                if (yesCount === yesQuestions.length - 1) {
+                    noBtn.classList.add('hidden');
+                }
+            } else {
+                questionArea.classList.add('hidden');
+                buttonArea.classList.add('hidden');
+                finalMessage.style.display = 'block';
+            }
+        });
+
+        noBtn.addEventListener('click', function() {
+            growYesButton();
+            shrinkNoButton();
+            noCount++;
+            
+            if (noCount < noQuestions.length) {
+                questionEl.textContent = noQuestions[noCount];
+                
+                if (noCount === noQuestions.length - 1) {
+                    noBtn.classList.add('hidden');
+                }
+            } else {
+                questionEl.textContent = "Tekrar düşünür müsün? 🥺";
+                noBtn.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
